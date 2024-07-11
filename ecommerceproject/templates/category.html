@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+        Welcome to LuxeMart...
+    {% endif %}
+{% endblock %}
+{% block title %}
+    {% if category %}
+        {{ category.name }} -- LuxeMart
+    {% else %}
+        Luxury in Every Stitch -- LuxeMart
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+
+    <div>
+        <div class="row my_row_class">
+            <div class="mx-auto">
+
+            </div>
+            <p><a href="{% url 'shop:allProdCat' %}"> Our  Product Collection></a> </p>
+        </div>
+    </div>
+    {% endif %}
+<div class="mx_auto">
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}">
+</div>
+    <br>
+<div>
+    <h1 class="text-center my_title">{{category.name</h1>
+    <p class="text-justify" >{{category.description}}</p>
+</div>
+    {% else %}
+<div>
+    <img class="my_image my_image_padding" src="{% static 'img/banner.jpg' %}" alt="our_products" width="1000px" height="400px" >
+
+</div>
+    <br>
+<div>
+    <h2 class="text-center my_title" > Our Product Collections </h2>
+    <p class="text-justify" >Discover our extensive range of men’s clothing designed to fit every occasion. From casual wear to formal attire, we’ve got you covered with styles that combine comfort, durability, and the latest fashion trends.
+Browse our  collection and discover your new favorite pieces. Whether you're looking for everyday essentials or standout styles, we have everything you need to create the perfect wardrobe.Stay ahead of the fashion curve with our latest designs and timeless classics of the latest fashion trends.</p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg4" >
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{product.get_url}}"> <img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}"></a>
+                <div class="card-body">
+                    <h4>{{product.name}} </h4>
+                    <p>{{product.price}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto"></div>
+    {% if products.paginator.num_pages > 1 %}
+    <hr>
+    <div class="text-center">
+        {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+        {% endfor %}
+    </div>
+        {% endif %}
+</div>
+{% endblock %}
